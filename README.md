@@ -1,2 +1,2 @@
 # Quote-Scrapper
-Scrapping quotes from https://quotes.toscrape.com/
+Learning to scrape quotes from https://quotes.toscrape.com/
