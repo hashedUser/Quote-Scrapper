@@ -1,5 +1,7 @@
 # find quote data within a tag
+from selenium.webdriver.common.by import By
 from locators.quote_locators import QuoteLocators
+
 
 class QuoteParser:
     """
@@ -15,14 +17,14 @@ class QuoteParser:
     @property
     def content(self):
         locator = QuoteLocators.CONTENT
-        return self.parent.select_one(locator).string
+        return self.parent.find_element(By.CSS_SELECTOR, locator).text
 
     @property
     def author(self):
         locator = QuoteLocators.AUTHOR
-        return self.parent.select_one(locator).string
+        return self.parent.find_element(By.CSS_SELECTOR, locator).text
 
     @property
     def tags(self):
         locator = QuoteLocators.TAGS
-        return [e.string for e in self.parent.select_one(locator).string]
+        return self.parent.find_elements(By.CSS_SELECTOR, locator)
