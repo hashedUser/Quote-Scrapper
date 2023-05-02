@@ -1,5 +1,7 @@
 # getting data out from the quotes page (main page)
 from typing import List
+
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 from locators.quotes_page_locators import QuotesPageLocators
@@ -38,7 +40,22 @@ class QuotesPage:
         return self.browser.find_element(By.CSS_SELECTOR, QuotesPageLocators.SEARCH_BUTTON)
 
     def get_available_tags(self) -> List[str]:
-        return [option.text.strip() for option in self.tag_dropdown.options].pop(0)
+        return [option.text.strip() for option in self.tag_dropdown.options]
 
     def select_tag(self, selected_tag):
         self.tag_dropdown.select_by_visible_text(selected_tag)
+
+    def search_for_quotes(self, author_name: str, tag_name: str) -> List[QuoteParser]:
+        self.select_author(author_name)
+        try:
+            self.select_tag(tag_name)
+        except NoSuchElementException:
+            raise InvalidTagForAuthorError(
+                f"Author {author_name} does not have any quotes tagged with {tag_name}"
+            )
+        self.search_button.click()
+        return self.quotes
+
+
+class InvalidTagForAuthorError(ValueError):
+    pass
