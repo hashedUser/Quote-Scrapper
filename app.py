@@ -14,5 +14,8 @@ page.select_author(author)
 
 tags = page.get_available_tags()
 print("Select one of these [{}]".format(" | ".join(tags)))
-selected_tag = input("Enter your tag")
+selected_tag = input("Enter your tag: ")
 page.select_tag(selected_tag)
+page.search_button.click()
+print(page.quotes)
+
