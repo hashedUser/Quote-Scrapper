@@ -33,8 +33,12 @@ class QuotesPage:
         element = self.browser.find_element(By.CSS_SELECTOR, QuotesPageLocators.TAG_DROPDOWN)
         return Select(element)
 
+    @property
+    def search_button(self):
+        return self.browser.find_element(By.CSS_SELECTOR, QuotesPageLocators.SEARCH_BUTTON)
+
     def get_available_tags(self) -> List[str]:
-        return [option.text.strip() for option in self.tag_dropdown.options]
+        return [option.text.strip() for option in self.tag_dropdown.options].pop(0)
 
     def select_tag(self, selected_tag):
         self.tag_dropdown.select_by_visible_text(selected_tag)
