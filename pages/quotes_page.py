@@ -1,5 +1,6 @@
 # getting data out from the quotes page (main page)
-
+from typing import List
+from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 from locators.quotes_page_locators import QuotesPageLocators
 from parsers.quote import QuoteParser
@@ -10,7 +11,7 @@ class QuotesPage:
         self.browser = browser
 
     @property
-    def quotes(self):
+    def quotes(self) -> List[QuoteParser]:
         return [
             QuoteParser(e)
             for e in self.browser.find_elements(
@@ -18,3 +19,22 @@ class QuotesPage:
                 QuotesPageLocators.QUOTE
             )
         ]
+
+    @property
+    def author_dropdown(self) -> Select:
+        element = self.browser.find_element(By.CSS_SELECTOR, QuotesPageLocators.AUTHOR_DROPDOWN)
+        return Select(element)
+
+    def select_author(self, author_name: str):
+        self.author_dropdown.select_by_visible_text(author_name)
+
+    @property
+    def tag_dropdown(self) -> Select:
+        element = self.browser.find_element(By.CSS_SELECTOR, QuotesPageLocators.TAG_DROPDOWN)
+        return Select(element)
+
+    def get_available_tags(self) -> List[str]:
+        return [option.text.strip() for option in self.tag_dropdown.options]
+
+    def select_tag(self, selected_tag):
+        self.tag_dropdown.select_by_visible_text(selected_tag)

@@ -9,5 +9,10 @@ chrome.get('https://quotes.toscrape.com/search.aspx')
 # QuotesPage executed for parsing the page using bs4
 page = QuotesPage(chrome)  # Parse using beautifulsoup
 
-for quote in page.quotes:
-    print(quote)
+author = input("Enter the author you'd' like quotes from: ")
+page.select_author(author)
+
+tags = page.get_available_tags()
+print("Select one of these [{}]".format(" | ".join(tags)))
+selected_tag = input("Enter your tag")
+page.select_tag(selected_tag)
